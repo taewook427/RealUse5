@@ -5,7 +5,7 @@ func gettxt(str url, str domain) -> str kdbtxt
 # http~.html 주소와 그 안의 id domain을 받아 kformat str 반환.
 func download(str url, str name, int num, str path)
 # http~/ 주소와 파일 이름(.N 전), 조각 개수 받아 경로에 원본 파일 생성.
-func driver(str url, str[] datas, str path)
+func driver(str url, str[] datas, str path) -> int ver
 # MS edgedriver 홈페이지 주소와 위치 파라미터를 받아 경로에 driver zip 파일 생성.
 
 <go>
@@ -13,7 +13,7 @@ func Gettxt(str url, str domain) -> str kdbtxt
 # http~.html 주소와 그 안의 id domain을 받아 kformat str 반환.
 func download(str url, str name, int num, str path)
 # http~/ 주소와 파일 이름(.N 전), 조각 개수 받아 경로에 원본 파일 생성.
-func driver(str url, str[] datas, str path)
+func driver(str url, str[] datas, str path) -> int ver
 # MS edgedriver 홈페이지 주소와 위치 파라미터를 받아 경로에 driver zip 파일 생성.
 
 kweb 제작 기준 파라미터
