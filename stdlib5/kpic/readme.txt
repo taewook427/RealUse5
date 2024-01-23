@@ -33,6 +33,13 @@ class toolbox
 - style은 "bmp", "png", "webp", mode는 2, 4가 가능합니다.
 - 사진 크기에 맞춰 패딩 바이트가 추가되며, 파일 이름은 저장되지 않으니 kzip과 같이 운용하세요.
 
+!!! python VM 경고 !!!
+multiprocessing 모듈 사용 시 메인 스크립트에
+import multiprocessing as mp
+if __name__ == '__main__':
+    mp.freeze_support()
+문구를 추가할 것.
+
 사진 바이트 속에 이진 데이터를 숨길 수 있습니다.
 기본 원리는 사진의 픽셀 바이트에서 16으로 나눈 몫은 그대로,
 나머지를 이용해 바이트를 인코딩하는 것입니다.
