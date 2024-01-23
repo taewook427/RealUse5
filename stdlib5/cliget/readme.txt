@@ -2,7 +2,7 @@ stdlib5.cliget : CLI 환경에서의 파일/폴더 선택창 구현.
 
 <go>
 func Init() -> toolbox
-#
+# 툴박스 구조체 반환.
 struct toolbox
     func Getfile(string path) -> string path
     # 시작할 폴더를 경로로 입력하고 파일 하나를 선택함.
