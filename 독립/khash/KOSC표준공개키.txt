@@ -1,0 +1,6 @@
+name = "KOS-C_CA_표준"
+date = "2024-01-31_15:25:47"
+strength = 4096
+public = "-----BEGIN#sPUBLIC#sKEY-----#nMIICCgKCAgEA5ZFg8JftUcPusTOYRZO+ylEqA4b1Qdw9ZXjj4wd2hyrrKI9Sj/+O#nMxL5nuxQrQQ8ZAG22SAfJ8MAdMAVA90qV82ni1P4YhSW17BqnddseFx9E4hU2Rx/#n+2fqke9+9fB8GRsFXQdwdJl6zVfs4ZcwzjaL3Xfjk125Jc0bmVlPjj1iphZI/1wS#nF5CfC7OFjEoA7NXpl5FUpOq1LDQ1GZZh2IMa7QoNRmp44/f4xrNQxJVAsSB9DL60#nZa2K3qSKERARlfeGKbNO9qx0fQyexSUeTrDpmAsvP+s81WzfdfLWEUrLMarpNpVX#nBpXkNa2uHC1tNkfOMazFoLyw67vuF08GZ+AFpe+1UNN5/n7dLLDcqC87LLS2ENLi#n/q2Vx1TOBqvo4xugpqKJzPVwpchbXe6K6XI9YtAyYNpCfGQ8iP8WWZQfa6+kXj6v#n0wnN8imvaC++QQwzsooRm6L0ebaoxM2MXtu/LOQN/ve61Bj5GLcj4xMWBw5K0KES#nO6gKhiJbeAP+/JQ5biwPgc6v/1IJWjFxh0t+DHzzuSltrS/kLAtWW2fykQ5IvRmX#nwtBthNBMZxaMZlrgROksNSzqbiIDFMEJqJ8myU0C5QlnlGDxvQNVv7YLF1S4LaqM#nyOQWe/NhPpI/B86l+euhrEf5yziSXDrjClOL5U74i9FCfaXHxj8hHEsCAwEAAQ==#n-----END#sPUBLIC#sKEY-----#n"
+
+배포 시 OS별 패키지(~.zip)파일과 그에 따른 서명(~.txt) 파일을 같이 배포합니다!
