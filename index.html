@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>gen5 project main</title>
+
+  <style>
+      body {
+        background-color: royalblue;
+        color: gold;
+        font-family: Arial, sans-serif;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .links {
+        opacity: 1;
+        transition: opacity 0.1s;
+      }
+
+      .links a {
+        font-size: 20px;
+        text-decoration: none;
+        transition: font-size 0.3s;
+        color: gold;
+      }
+  
+      .links a:hover {
+        font-size: 40px;
+      }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Gen5 WebMain</h1>
+    <p>
+      처음사용자용 도움말 & 자동설치기 모음<br>
+      리눅스 유저 혹은 코드 등을 확인하려는 사람은 github 페이지를 방문해주세요<br>
+    </p>
+
+    <div class="links">
+      <p><a href="websvr/userguide/test593.html">설명서 - 독립 프로그램</a></p>
+      <p><a href="websvr/userguide/test594.html">설명서 - ST5adv (시작기)</a></p>
+      <p><a href="websvr/userguide/test595.html">설명서 - ST5adv Ext (확장)</a></p>
+      <p><a href="websvr/setup/SetUp5.zip">다운로드 - 자동설치기</a></p>
+      <p><a href="websvr/datasvr0.html">data server 0</a></p>
+      <p><a href="https://github.com/taewook427/project_gen5/tree/main">github mainpage</a></p>
+    </div>
+  </div>
+
+  <script>
+    // 마우스 호버 이벤트
+    const links = document.querySelectorAll(".links a");
+    links.forEach(link => {
+        link.addEventListener("mouseover", () => {
+            link.style.fontSize = "40px";
+        });
+
+        link.addEventListener("mouseout", () => {
+            link.style.fontSize = "20px";
+        });
+    });
+  </script>
+
+</body>
+</html>
