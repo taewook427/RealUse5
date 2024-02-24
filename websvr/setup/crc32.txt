@@ -1,0 +1,9 @@
+Powerlog5 : 26651f96
+Powercut5 : e4fdf89c
+ Kviewer5 : 1abf6003
+   Khash5 : 17b2be8e
+   Kexec5 : 1f6626b6
+    Kbin5 : e32838c4
+ MigTool5 : f3b9f37e
+   Kboom5 : 8983c5d0
+ Starter5 : a1da5c1f
