@@ -1,0 +1,6 @@
+name = "mouseptr"
+version = 1
+os = ""
+release = ""
+install = ""
+info = "디스플레이 해상도와 마우스 위치를 표시합니다."
