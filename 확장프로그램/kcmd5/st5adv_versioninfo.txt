@@ -1,0 +1,6 @@
+name = "kcmd"
+version = 1
+os = "windows"
+release = "2024-03-02_12:00:31"
+install = ""
+info = "쉽고#s빠른#s명령어#s실행#s모음집입니다."
