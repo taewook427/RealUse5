@@ -1,0 +1,6 @@
+name = "clock"
+version = 1
+os = ""
+release = ""
+install = ""
+info = "다목적 초단위시각, 타이머, 스탑워치입니다."
