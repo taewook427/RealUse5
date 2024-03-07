@@ -1,6 +1,0 @@
-name = "andcom"
-version = 1
-os = ""
-release = ""
-install = ""
-info = "다른 기기로의 데이터 전송을 위해 zip/7z 파일을 다룹니다"

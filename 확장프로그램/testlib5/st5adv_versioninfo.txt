@@ -1,6 +1,0 @@
-name = "testlib"
-version = 0
-os = ""
-release = ""
-install = ""
-info = "ST5adv의 운용시험용 공용파일입니다."

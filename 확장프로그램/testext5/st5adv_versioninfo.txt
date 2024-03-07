@@ -1,6 +1,0 @@
-name = "testext"
-version = 0
-os = ""
-release = ""
-install = ""
-info = "ST5adv의 운용시험용 확장입니다."
