@@ -12,21 +12,21 @@ class toolbox
     .data7 # zipre5 webp 128x128 도안
 
 <go>
-func Kz5png() -> byte[]*
+func Kz5png() -> byte[]
 # kzip5 png 128x128 도안
-func Kz5webp() -> byte[]*
+func Kz5webp() -> byte[]
 # kzip5 webp 128x128 도안
-func Kp5png() -> byte[]*
+func Kp5png() -> byte[]
 # kpic5 png 128x128 도안
-func Kp5webp() -> byte[]*
+func Kp5webp() -> byte[]
 # kpic5 webp 128x128 도안
-func Ka5png() -> byte[]*
+func Ka5png() -> byte[]
 # kaes5 png 128x128 도안
-func Ka5webp() -> byte[]*
+func Ka5webp() -> byte[]
 # kaes5 webp 128x128 도안
-func Zr5png() -> byte[]*
+func Zr5png() -> byte[]
 # zipre5 png 128x128 도안
-func Zr5webp() -> byte[]*
+func Zr5webp() -> byte[]
 # zipre5 webp 128x128 도안
 
 소스코드 바이너리 적재기를 통해 생성된 코드를 수정하였습니다.
