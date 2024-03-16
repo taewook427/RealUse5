@@ -9,11 +9,11 @@ func pack(bytes[] series) -> bytes
 # 여러 바이트열을 하나의 바이트열로 패키징.
 func unpack(bytes chunk) -> bytes[]
 # 패키징된 바이트열 덩어리 풀어 바이트열들 반환.
-func send(bytes data) -> (*CCHAR, int)
+func send(bytes data) -> (CCHAR*, int)
 # 바이트열을 ctypes 포인터로 바꾸고 길이 반환.
-func recv(*CCHAR reader, int length) -> bytes
+func recv(CCHAR* reader, int length) -> bytes
 # 함수 출력 C char 포인터와 길이를 입력받아 바이트열 반환.
-func recvauto(*CCHAR reader) -> bytes
+func recvauto(CCHAR* reader) -> bytes
 # 함수 출력 C char 포인터를 받아 자동으로 길이 추출해 바이트열 반환.
 func call(str args, str rets) -> (tuple, CTYPES)
 # py ctypes 함수 입출력 설정값인 튜플, ctypes 타입 값을 반환.
@@ -29,13 +29,13 @@ func Unpack(byte[] chunk) -> byte[][]
 # 패키징된 바이트열 덩어리 풀어 바이트열들 반환.
 
 <go comment>
-func Recv(*CCHAR arr, CINT length) -> byte[]
+func Recv(CCHAR* arr, CINT length) -> byte[]
 # C CHAR 포인터와 길이를 받아 바이트 슬라이스 반환.
-func Send(byte[] arr) -> *CCHAR
+func Send(byte[] arr) -> CCHAR*
 # 바이트 슬라이스를 데이터 그대로 C CHAR 포인터로 변환.
-func Sendauto(byte[] arr) -> *CCHAR
+func Sendauto(byte[] arr) -> CCHAR*
 # 자동으로 길이헤더를 붙어 C CHAR 포인터로 변환.
-func Free(*CCHAR arr)
+func Free(CCHAR* arr)
 # malloc으로 할당된 C FFI 메모리를 해제. go -> py로 바이트열을 보낸 후 항상 호출해야 함.
 
 기본적으로 사용하는 모듈이 적기에 FFI가 아닌 다른 목적으로 사용할 수도 있습니다.
