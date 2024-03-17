@@ -2,6 +2,22 @@
 
 package kobj
 
+import (
+	"os"
+	"path/filepath"
+	"strings"
+)
+
+// re-alloc current path, returns cmd args
+func Repath() []string {
+	var args []string
+	args = append(args, os.Args...)
+	path, _ := filepath.Abs(args[0])
+	path = strings.Replace(path, "\\", "/", -1)
+	os.Chdir(path[0:strings.LastIndex(path, "/")])
+	return args
+}
+
 // little endian encoding
 func Encode(num int, length int) []byte {
 	temp := make([]byte, length)
