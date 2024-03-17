@@ -1,6 +1,8 @@
 stdlib5.kobj [win & linux] : python - golang C FFI 보조기능들.
 
 <python>
+func repath() -> str[]
+# 현재 실행파일의 작업 디렉토리를 자동으로 맞추고 명령줄 인자를 반환.
 func encode(int num, int length) -> bytes
 # 정수를 바이트로 리틀 엔디안 인코딩.
 func decode(bytes data) -> int
@@ -19,6 +21,8 @@ func call(str args, str rets) -> (tuple, CTYPES)
 # py ctypes 함수 입출력 설정값인 튜플, ctypes 타입 값을 반환.
 
 <go>
+func Repath() -> str[]
+# 현재 실행파일의 작업 디렉토리를 자동으로 맞추고 명령줄 인자를 반환.
 func Encode(int num, int length) -> byte[]
 # 정수를 바이트로 리틀 엔디안 인코딩.
 func Decode(byte[] data) -> int
