@@ -1,6 +1,16 @@
 # test628 : stdlib5.kobj
 
+import os
+import sys
 import ctypes
+
+# re-alloc current path, returns cmd args
+def repath():
+    temp = sys.argv
+    path = os.path.abspath( temp[0] )
+    path = path.replace("\\", "/")
+    os.chdir( path[ 0:path.rfind("/") ] )
+    return temp
 
 # little endian encoding, I -> B
 def encode(num, length):
