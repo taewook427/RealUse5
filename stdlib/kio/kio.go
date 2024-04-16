@@ -146,14 +146,31 @@ func Read(f *os.File, size int) ([]byte, error) {
 			return nil, fserr
 		}
 	}
-	temp := make([]byte, size)
-	success, err := f.Read(temp)
-	if err == nil {
-		return temp, nil
-	} else {
-		temp = temp[0:success]
-		return temp, err
+
+	var tb []byte
+	temp := make([]byte, 0, size)
+	for i := 0; i < size/1073741824; i++ {
+		tb = make([]byte, 1073741824)
+		success, err := f.Read(tb)
+		if err == nil {
+			temp = append(temp, tb...)
+		} else {
+			temp = append(temp, tb[0:success]...)
+			return temp, err
+		}
 	}
+
+	if size%1073741824 != 0 {
+		tb = make([]byte, size%1073741824)
+		success, err := f.Read(tb)
+		if err == nil {
+			temp = append(temp, tb...)
+		} else {
+			temp = append(temp, tb[0:success]...)
+			return temp, err
+		}
+	}
+	return temp, nil
 }
 
 // write bytes, returns not written bytes (pointer of original!!)
