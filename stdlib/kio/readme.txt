@@ -23,4 +23,9 @@ func Read(OSFILE* f, int size) -> (byte[], error)
 func Write(OSFILE* f, byte[] data) -> (byte[], error)
 # 파일 쓰기. 쓰기 실패한 바이트만큼 자동으로 잘려 반환됨.
 
+!!!!! Reading 경고 !!!!!
+Golang의 기본 읽기 함수(Read)는 1GiB를 초과하는 큰 파일을 한번에 제대로 읽을 수 없습니다.
+Seek 함수와 조합하여 1GiB 단위로 끊어 읽고, 재조립하는 과정을 거치십시오.
+(f.Seek(pos), kio.Read(num), ...)
+
 많은 코드에서 공통적으로 쓰일 만한 기능들을 포장했습니다.
