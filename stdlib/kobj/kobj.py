@@ -57,18 +57,18 @@ def send(data):
 
 # cptr(nB data) -> B
 def recv(reader, length):
-    temp = [0] * length
+    temp = bytearray(length)
     for i in range(0, length):
         temp[i] = reader[i][0]
     return bytes(temp)
 
 # cptr(8B len + nB data) -> B
 def recvauto(reader):
-    temp = [0] * 8
+    temp = bytearray(8)
     for i in range(0, 8):
         temp[i] = reader[i][0]
     length = decode( bytes(temp) )
-    temp = [0] * length
+    temp = bytearray(length)
     for i in range(0, length):
         temp[i] = reader[i + 8][0]
     return bytes(temp)
