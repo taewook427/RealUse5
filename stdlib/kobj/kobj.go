@@ -86,17 +86,7 @@ func Recv(arr *C.char, length C.int) []byte {
 
 // []byte -> cptr(nB data)
 func Send(arr []byte) *C.char {
-	length := len(arr)
-	tb := make([]C.char, length)
-	for i, r := range arr {
-		tb[i] = C.char(r)
-	}
-
-	// make C char array
-	na := (*C.char)(C.malloc(C.size_t(length) * C.sizeof_char))
-	copy((*[1 << 30]C.char)(unsafe.Pointer(na))[:length:length], tb)
-
-	return na
+	return (*C.char)(C.CBytes(arr))
 }
 
 // []byte -> cptr(8B len + nB data)
