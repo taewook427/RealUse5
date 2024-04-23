@@ -81,16 +81,7 @@ import "unsafe"
 
 // (c_char_p, length int) -> []byte
 func Recv(arr *C.char, length C.int) []byte {
-	// C char array -> Go slice
-	gs := (*[1 << 30]C.char)(unsafe.Pointer(arr))[:length:length]
-
-	// convert to []byte
-	bs := make([]byte, len(gs))
-	for i := 0; i < len(bs); i++ {
-		bs[i] = byte(gs[i])
-	}
-
-	return bs
+	return C.GoBytes(unsafe.Pointer(arr), length)
 }
 
 // []byte -> cptr(nB data)
