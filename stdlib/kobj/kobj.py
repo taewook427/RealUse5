@@ -57,21 +57,12 @@ def send(data):
 
 # cptr(nB data) -> B
 def recv(reader, length):
-    temp = bytearray(length)
-    for i in range(0, length):
-        temp[i] = reader[i][0]
-    return bytes(temp)
+    return reader[0:length]
 
 # cptr(8B len + nB data) -> B
 def recvauto(reader):
-    temp = bytearray(8)
-    for i in range(0, 8):
-        temp[i] = reader[i][0]
-    length = decode( bytes(temp) )
-    temp = bytearray(length)
-    for i in range(0, length):
-        temp[i] = reader[i + 8][0]
-    return bytes(temp)
+    length = decode( reader[0:8] )
+    return reader[8:length + 8]
 
 # dll/so func arg/ret types, (types, types), { int(i), float(f), charptr(b) }
 def call(args, rets):
