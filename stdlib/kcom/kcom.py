@@ -20,16 +20,19 @@ def gettxt(url, domain):
         return data.text
     
 # download binary name -> path from (http~ */) + (*.num)
-def download(url, name, num, path):
+def download(url, name, num, path, proc):
+    proc[0] = 0.0
     if url[-1] != "/":
         url = url + "/"
     with open(path, "wb") as f:
         for i in range(0, num):
+            proc[0] = i / num
             html = requests.get(url + name + f".{i}")
             if html.content == None:
                 raise Exception(f"No Data : {name}.{i}")
             else:
                 f.write(html.content)
+    proc[0] = 2.0
 
 # (port int, key 4B) -> address str
 def pack(port, key):
