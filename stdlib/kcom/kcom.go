@@ -51,7 +51,8 @@ func Gettxt(url string, domain string) (string, error) {
 }
 
 // download binary name -> path from (http~ */) + (*.num)
-func Download(url string, name string, num int, path string) error {
+func Download(url string, name string, num int, path string, proc *float64) error {
+	*proc = 0.0
 	// URL slash update
 	if url[len(url)-1] != '/' {
 		url = url + "/"
@@ -66,6 +67,7 @@ func Download(url string, name string, num int, path string) error {
 
 	// write data on file
 	for i := 0; i < num; i++ {
+		*proc = float64(i) / float64(num)
 		resp, err := http.Get(fmt.Sprintf("%s%s.%d", url, name, i))
 		if err != nil {
 			return errors.New("download fail")
@@ -82,6 +84,7 @@ func Download(url string, name string, num int, path string) error {
 		}
 	}
 
+	*proc = 2.0
 	return nil
 }
 
