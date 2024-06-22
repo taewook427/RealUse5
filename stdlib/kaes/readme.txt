@@ -107,6 +107,11 @@ struct Funcmode
     .After SimIO # 쓰기 대상 파일 경로 / 바이트 설정된 SimIO 구조체.
     .Proc float # 진행 정보. -1 : 시작 전, 0~1 : 진행 중, 2 : 종료 후.
 
+func Genrand(int size) -> byte[]
+# size 바이트 크기의 암호학적 난수 반환.
+func Basickey() -> byte[]
+# G5kaes 기본키파일 반환.
+
 !! 내부 값 초기화 !!
 모든 작업 전후로 내부 값을 초기화해야
 값 오염을 막을 수 있습니다.
