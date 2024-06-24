@@ -1,0 +1,135 @@
+Gen0 ~ Gen5 속도 & 메모리 성능평가
+
+< 환경 >
+테스트는 각 1회씩 수행했으며, 상황에 따라 안 맞거나 생략된 테스트 존재.
+테스트 파일은 모든 바이트가 0x00인 0-file. 측정값 단위는 MiB/s, M/s, MiB, xMEM.
+이 테스트는 대략적인 값만을 표시하며 실제 성능은 환경이나 대상에 따라 달라질 수 있음.
+
+  운영체제          CPU     RAM      SSD    기온
+windows11   i5-13600kf   32GiB   SK P31   28`C
+
+ setA    setB    setC    setD    setE
+ file    file    file    file     dir
+  300    1024    3072   10240   10240
+
+< gen0 >
+BFIO : 기본 파일 입출력은 SSD 성능에 의존하기에 수치 차이가 크지 않다.
+
+ setB     read   <-rel    mem    write   <-rel    mem
+py.st   1680.7   *1.00     x1   1350.5    0.80     x1
+go.st   1706.4    1.02     x1   1458.9    0.87     x1
+
+BCalc : 일반적으로 정수연산이 실수연산보다 빠르지만,
+파이썬의 정수연산은 내부적으로 C 배열을 거치기에 느리다.
+부동소수점 연산으로 인터프리터 언어와 컴파일 언어의 성능차이를 비교해 볼 수 있다.
+
+  40M      int   <-rel    mem    float   <-rel    mem
+py.st   73.152    0.75     30   97.279   *1.00     30
+go.st   8495.1    87.3     30   4965.8    51.0     30
+
+< gen1 >
+kenc : AES를 사용하지도 않고, 순차적 읽기-계산-쓰기 방식(simple mono RCW)을 사용해 느리다.
+
+ setA      enc   <-rel    mem      dec   <-rel    mem
+py.st   1.8029   *1.00     40   1.7385    0.96     40
+go.st   244.27   135.5     40   242.58   134.5     40
+
+< gen2 >
+kenc : AES를 도입했으며, 16바이트씩 순차적 읽기-계산-쓰기 방식(simple mono RCW)을 사용한다.
+go버전은 16KiB 청크 입출력(simple chunk RCW)으로 속도를 더 올렸다.
+
+ setA      enc   <-rel    mem      dec   <-rel    mem
+py.st   15.267   *1.00     40   15.259    1.00     40
+go.st   580.54    38.0     40   756.51    49.6     40
+
+< gen3 >
+kzip : 폴더 구조화 -> 연속파일쓰기 순서로 동작한다.
+go버전은 메모리 사용이나 계산 등에서 속도향상이 있었을 것이라고 추측된다.
+
+ setE     pack   <-rel    mem   unpack   <-rel    mem
+py.st   539.76   *1.00     60   1297.5    2.40     60
+go.st   1152.4    2.14     40   1613.3    2.99     40
+
+kaes : 128KiB 청크 + 32배수 멀티프로세싱 방식을 도입했다.
+읽기-멀티계산-쓰기 방식(simple multi RCW)이다. 매 계산마다 프로세스/고루틴을 생성해야 한다.
+all-mode는 시작 전 비밀번호 해싱을 마쳐야 하기에 속도저하가 있다.
+
+ setC    enF-A   <-rel    mem    enF-F   <-rel    mem    deF-A   <-rel    mem    deF-F   <-rel    mem
+py.st   90.236   *1.00    500   94.693    1.05    500   95.103    1.05    500   95.227    1.06    500
+go.st   667.37    7.40     40   757.73    8.40     40   711.18    7.88     40   818.70    9.07     40
+
+kpic : 읽기-계산-BMP-PNG 방식으로 동작한다. 계산과 사진변환 과정은 32배수 멀티프로세싱 처리된다.
+go버전은 디스크에 중간사진을 기록하지 않도록 개량되어 속도향상이 있다.
+
+ setB     pack   <-rel    mem   unpack   <-rel    mem
+py.st   52.011   *1.00   4000   94.276    1.81   4000
+go.st   311.58    5.99   2000   607.32    11.7   2000
+
+< gen4 >
+kenc : 파일 패키징 -> 비밀번호 해싱 -> 암호화 -> 임시파일 지우기 순서로 동작한다.
+py.st는 simple multi RCW (128KiB * 32), py.hy는 내부적으로 go로 동작하며 simple multi RCW (128KiB * 32) 를 사용한다.
+go.st는 멀티프로세싱을 사용하진 않지만, 파일입출력과 계산을 동시에 하여 오버헤드를 줄였다. (concurrent chunk RW/C, 128KiB)
+java.t는 py.st와 동일하게 simple multi RCW (128KiB * 32)를 사용한다.
+
+  setC     pack   <-rel    mem   unpack   <-rel    mem
+ py.st   55.652   *1.00    500   57.962    1.04    500
+ py.hy   503.61    9.05    100   520.68    9.36    100
+ go.st   631.57    11.3     40   646.16    11.6     40
+java.t   243.81    4.38    450   292.57    5.26    450
+
+kaes : py.hy는 파일 모드만 내부적으로 go로 동작하고 바이트 모드와 난수생성 모듈은 py.st와 동일하다.
+py.st와 py.hy는 모두 simple multi RCW (128KiB * 32)를 사용한다. (내부 go 모듈 포함)
+go.st는 오버헤드를 줄인 멀티프로세싱 방식(concurrent multi RW/C, 128KiB * 32)을 사용한다.
+all-mode는 시작 전 비밀번호 해싱을 마쳐야 하기에 속도저하가 있다.
+
+ setD    enF-A   <-rel    mem    enF-F   <-rel    mem    deF-A   <-rel    mem    deF-F   <-rel    mem
+py.st   108.60   *1.00    500   106.38    0.98    500   107.63    0.99    500   107.26    0.99    500
+py.hy   1092.8    10.1    100   1612.2    14.8    100   1283.3    11.8    100   1617.4    14.9    100
+go.st   1232.0    11.3     40   1799.8    16.6     40   1335.0    12.3     40   1821.7    16.8     40
+
+ setC    enB-A   <-rel    mem    enB-F   <-rel    mem    deB-A   <-rel    mem    deB-F   <-rel    mem
+py.st   84.607   *1.00   x3.5   87.529    1.03   x3.5   85.430    1.01   x3.5   87.643    1.04   x3.5
+py.hy   83.985    0.99   x3.5   86.714    1.02   x3.5   83.301    0.98   x3.5   87.149    1.03   x3.5
+go.st   619.63    7.32   x4.5   7162.0    84.7   x4.5   748.83    8.85   x4.5   8180.1    96.7   x4.5
+
+ setC     genr   <-rel    mem
+py.st   3709.9   *1.00     x1
+py.hy   3709.6    1.00     x1
+
+< gen5 >
+kzip : 폴더 구조화 -> 연속파일쓰기 순서로 동작한다. 구조가 gen3에 비해 단순해지며 속도차이가 줄었다.
+
+ setE     pack   <-rel    mem   unpack   <-rel    mem
+py.st   1043.6   *1.00     60   1988.1    1.91     60
+go.st   1094.7    1.05    100   2182.8    2.09    100
+
+kaes : py.st는 concurrent multi RW/C (512KiB * 40)으로 동작한다.
+py.hy 파일모드(내부적으로 go로 돌아감)와 go.st는 계산 시 새 고루틴을 만들지 않는 파이프라인 기법을 도입했다.
+pipeline multi R/C/W (512KiB * 40)은 비밀번호 해싱과 읽기-계산을 동시에 수행하며 오버헤드를 줄인다.
+py.hy 바이트모드는 계산 부분만 내부적으로 go(pipeline multi R/C/W (512KiB * 40) 사용)로 돌아간다.
+
+ setD    enF-A   <-rel    mem    enF-F   <-rel    mem    deF-A   <-rel    mem    deF-F   <-rel    mem
+py.st   604.64   *1.00    600   741.32    1.23    600   669.56    1.11    600   713.76    1.18    600
+py.hy   1584.4    2.62   1500   2094.2    3.46    120   1497.2    2.48   1500   1877.1    3.10    120
+go.st   1079.0    1.78   1200   2089.3    3.46    100   1557.8    2.58   1200   2080.0    3.44    100
+
+ setC    enB-A   <-rel    mem    enB-F   <-rel    mem    deB-A   <-rel    mem    deB-F   <-rel    mem
+py.st   290.87   *1.00   x3.5   324.87    1.12   x3.5   291.83    1.00   x3.5   327.04    1.12   x3.5
+py.hy   384.19    1.32   x3.5   446.34    1.53   x3.5   387.39    1.33   x3.5   447.76    1.54   x3.5
+go.st   1535.8    5.28   x3.5   6430.4    22.1   x3.5   1776.9    6.11   x3.5   5354.5    18.4   x3.5
+
+ setC     genr   <-rel    mem
+py.st   3641.1   *1.00     x1
+py.hy   3709.4    1.05     x1
+go.st   2243.1    0.63     x1
+
+kpic : png는 webp에 비해 속도가 빠르고 메모리를 적게 먹지만 출력 용량이 크다.
+go는 webp 인코더가 없기에 외부 실행파일을 이용해 인코딩하여 속도 손실이 있다.
+py.st는 simple multi RCW (N * 32), go.st는 pipeline multi R/C/W (N * 32) 방식을 쓴다.
+go.st는 주형사진을 미리 변환하고 재사용하기에 속도향상이 있다.
+
+      setB     pack   <-rel    mem   unpack   <-rel    mem
+ py.st.png   34.859    1.32   1400   41.615    1.58   1400
+ go.st.png   477.59    18.1   2400   1159.5    44.1   2400
+py.st.webp   26.322   *1.00   2500   41.330    1.57   2500
+go.st.webp   85.429    3.25   3400   879.99    33.4   3400
