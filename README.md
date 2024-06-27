@@ -36,4 +36,6 @@ Windows 11과 Linux Mint cinnamon을 지원합니다.
 
 - SSD : 5GB storage or more
 
+- Network : download 10Mbps or faster
+
 last update : //이 프로젝트는 아직 개발중입니다//
