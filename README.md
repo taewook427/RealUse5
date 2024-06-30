@@ -28,7 +28,7 @@ Windows 11과 Linux Mint cinnamon을 지원합니다.
 
 - GUI environment : FHD (1920x1080) resolution or upper
 
-- CPU : Intel Core i3-11100 or upper
+- CPU : Intel Core i3-11TH or upper
 
 - RAM : 8GiB or more
 
