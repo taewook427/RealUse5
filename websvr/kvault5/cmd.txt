@@ -1,0 +1,111 @@
+===== 테스트 코드 & 조작 코드 기록 =====
+
+package kvault_test
+
+import (
+	"fmt"
+	"testing"
+
+	kvault "example.com"
+)
+
+func TestMain(m *testing.M) {
+	// init
+	//fmt.Println(kvault.PEVFS_New("./remote/", "TestClu0", 4096)) // new
+	//kv5, hint, err := kvault.PEVFS_Boot("./", "./local/", "./remote/", "./remote/0a.webp")
+	//kv5, hint, err := kvault.PEVFS_Boot("./", "./local/", "./remote/", "./354a.webp")
+	//fmt.Println("boot", err, string(hint))
+	//defer func() { fmt.Println(kv5.Log(false)) }() // emergency
+	//fmt.Println(" login ", kv5.Login([]byte("0000"), kaes.Basickey(), 4))
+	//fmt.Println(" login ", kv5.Login([]byte("2222"), kaes.Basickey(), 4))
+	//fmt.Println(kvault.PEVFS_Rebuild("./remote/", []byte("0000"), kaes.Basickey())) // rebuild
+
+	// basic
+	//kv5.Teleport("/test1/")
+	//fmt.Println(kv5.Print(true))
+	//fmt.Println(kv5.Search("*.go"))
+	//fmt.Println(kv5.NavName())
+	//fmt.Println(kv5.NavInfo(false))
+
+	// import
+	//kv5.Teleport("/_BIN/")
+	//fmt.Println(kv5.ImBin("헬로월드.txt", []byte("Hello, world!\n")))
+	//fmt.Println(kv5.ImFiles([]string{"a.txt", "안녕.exe", "b.txt"}))
+	//fmt.Println(kv5.ImDir("../test0/"))
+
+	// export
+	//kv5.Teleport("/_BIN/dec/")
+	//tb, err := kv5.ExBin("헬로월드.txt")
+	//fmt.Println(string(tb), err)
+	//fmt.Println(kv5.ExFiles([]string{"a.txt", "안녕.exe", "b.txt"}))
+	//fmt.Println(kv5.ExDir("/"))
+
+	// manipulate
+	//kv5.Teleport("/새 폴더/dec/__pycache__/")
+	//fmt.Println(kv5.Delete([]string{"/새 폴더/", "/_BIN/b.txt", "/new_folder/"}))
+	//fmt.Println(kv5.Move([]string{"test1/"}, "/new_folder/"))
+	//fmt.Println(kv5.Rename([]string{"t_test.go", "local/", "go.mod"}, []string{"tcode.go", "ㅋㅋㅋ/", ".txt"}))
+	//fmt.Println(kv5.DirNew([]string{"new_folder", "새 폴더/"}))
+	//fmt.Println(kv5.DirLock("/test1/", true, true))
+
+	// account
+	//kv5.Teleport("/_BIN/dec/")
+	//kv5.AccReset([]byte("0000"), kaes.Basickey(), []byte("newsub 0000 bkf"))
+	//kv5.AccExtend([]byte("2222"), kaes.Basickey(), []byte("newsub 2222 bkf"), "sub", true)
+	//kv5.AccExtend([]byte("3333"), kaes.Basickey(), []byte("newsub 3333 bkf"), "sub", false)
+	//kv5.ImFiles([]string{"./a.txt", "./b.txt", "./c.exe"})
+
+	// restore
+	//kv5.Teleport("/_BIN/dec/")
+	//fmt.Println(kv5.CluCheck())
+	//fmt.Println(kv5.CluRestore(false, true, false))
+
+	// exit & logging
+	//fmt.Println(kv5.Abort(true, true, true))
+	//fmt.Println(kv5.Debug())
+	//fmt.Println(kv5.Log(false))
+	//kvault.PEVFS_Exit(kv5)
+
+	// === test ===
+	//fmt.Println(kvault.Test_Basic("./t0/"))
+	//fmt.Println(kvault.Test_IO("./t0/"))
+	//fmt.Println(kvault.Test_Multi("./t0/"))
+}
+
+cmd init true
+
+cmd boot ./ ./local/ E:/t/ E:/t/0a.webp
+load byte
+
+cmd *
+store byte 0000
+store byte *
+cmd login 10
+load flag
+
+cmd log false
+load str
+
+cmd abort true true false
+cmd debug true
+load str
+
+store byte HELLOWORLD
+cmd imbin t0.txt
+cmd exbin t1.txt t0.txt
+load byte
+
+store curpath /_BIN/
+cmd dirnew folderA folder
+cmd imfile a.txt b.txt 안녕.exe
+cmd exfile a.txt b.txt 안녕.exe
+
+store byte 0000
+store byte *
+store byte NEW 0000 bkf
+cmd extend new false
+
+cmd move /_BIN/ 1 3
+
+cmd imdir ./dec/
+cmd exdir /dec/
