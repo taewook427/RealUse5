@@ -22,10 +22,14 @@ func Print(v interface{}, t float64) {
 func Input(q string) string {
 	fmt.Print(q)
 	temp, _ := bufio.NewReader(os.Stdin).ReadString('\n')
-	if temp[len(temp)-1] == '\n' {
+	if len(temp) == 0 {
+		return ""
+	} else if temp[len(temp)-1] == '\n' {
 		temp = temp[0 : len(temp)-1]
 	}
-	if temp[len(temp)-1] == '\r' {
+	if len(temp) == 0 {
+		return ""
+	} else if temp[len(temp)-1] == '\r' {
 		temp = temp[0 : len(temp)-1]
 	}
 	return temp
