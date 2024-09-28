@@ -78,7 +78,7 @@ class node:
 
         if self.ipv6:
             iprange = socket.AF_INET6
-            ipaddr = '[::1]'
+            ipaddr = '::1'
             protocol = socket.SOCK_STREAM
         else:
             iprange = socket.AF_INET
@@ -105,7 +105,7 @@ class node:
     def recieve(self, key):
         if self.ipv6:
             iprange = socket.AF_INET6
-            ipaddr = '[::1]'
+            ipaddr = '::1'
             protocol = socket.SOCK_STREAM
         else:
             iprange = socket.AF_INET
