@@ -87,11 +87,11 @@ with open(path + "_fphy.bin", "wb") as f:
 fphy = fphy[8:]
 for i in range(0, blocknum):
     key = b""
-    pos = 16 * int(i / 1) % 256
+    pos = 16 * (int(i / 1) % 256)
     key = key + fphy[pos:pos + 16]
-    pos = 16 * int(i / 256) % 256
+    pos = 16 * (int(i / 256) % 256)
     key = key + fphy[pos:pos + 16]
-    pos = 16 * int(i / 65536) % 256
+    pos = 16 * (int(i / 65536) % 256)
     key = key + fphy[pos:pos + 16]
 
     p0 = path + f"{int(i/256)}/{i%256}c.kv5"
