@@ -1,0 +1,143 @@
+stdlib5.kvault [win & linux] : KV4 업그레이드.
+
+<go>
+struct G4Finfo
+    .Self_name str # vdir 폴더 이름.
+    .Self_time str # 폴더 생성 시각 타임스탬프.
+    .Self_size int # 폴더 전체 크기 (moreinfo).
+    .Self_locked bool # 폴더 잠김 여부.
+    .Self_subdir int # 하위 폴더 개수 (moreinfo).
+    .Self_subfile int # 하위 파일 개수 (moreinfo).
+
+    .Dir_name str[] # 직접 하위 폴더 이름.
+    .Dir_time str[] # 직접 하위 폴더 타임스탬프.
+    .Dir_size int[] # 직접 하위 폴더 전체 크기 (moreinfo).
+    .Dir_locked bool[] # 직접 하위 폴더 잠김 여부.
+
+    .File_name str[] # 직접 하위 파일 이름.
+    .File_time str[] # 직접 하위 파일 타임스탬프.
+    .File_size int[] # 직접 하위 파일 크기.
+    .File_fptr int[] # 직접 하위 파일 fptr.
+
+func G4FS_New(str remote, str cluster, int divsize, int maxfptr) -> error
+# 빈 remote 폴더에 새 클러스터를 생성함.
+func G4FS_Boot(str desktop, str local, str remote, str blockApath) -> (G4FScore*, byte[], error)
+# 이미 존재하는 KV4 클러스터 정보를 읽어와 G4FScore 구조체와 비밀번호 힌트 반환.
+func G4FS_Exit(G4FScore* obj)
+# local 폴더를 삭제하고 G4FScore 구조체를 내부 데이터를 지워 정지 상태로 만듦.
+func G4FS_Rebuild(str remote, byte[] pw, byte[] kf) -> error
+# 보안강화를 위해 fphy를 초기화하고 파일명을 모두 재작성함.
+
+struct G4FScore
+    func Abort(bool reset, bool abort, bool working) -> (bool, bool)
+    # reset이 True면 내부 플래그를 재설정함. 현재 상태 플래그(abort/working)를 반환함.
+    func Debug() -> (int[], byte[][])
+    # 내부 상태를 디버그용으로 반환. int배열 : [divsize, maxfptr, last fptr].
+    # 바이트배열 : [wrsign(8B), salt(64B), pwhash(192B), fsyskey(48B), fkeykey(48B), fphykey(48B)].
+    func Log(bool reset) -> str
+    # '\n'으로 결합된 로그 반환. reset이 True면 로그를 초기화함.
+
+    func Login(byte[] pw, byte[] kf, int sleeptime) -> error
+    # Boot된 클러스터에 PWKF로 로그인하여 정보를 얻어옴. 입출력 오류 시 대기시간(초)를 받음.
+    func AccReset(byte[] pw, byte[] kf, byte[] hint) -> error
+    # 계정 PWKF 변경. R 모드라도 븦록 A는 재작성됨.
+    func AccExtend(byte[] pw, byte[] kf, byte[] hint, str account, bool wrlocked) -> (str, error)
+    # Curdir을 새 Rootdir로 한 계정 생성, 새 블럭 A는 desktop에 생성되며 그 경로가 반환됨.
+    # wrlocked가 True여야 하위 폴더 중 잠금상태인 폴더도 기록됨.
+
+    func Search(str name) -> str[]
+    # Curdir 밑의 폴더/파일 중 이름 기반으로 검색. 와일드카드 문자나 이스케이프 패턴 지원.
+    # * : 0+ str, ? : len1 str, %d : int, %s 1+ ascii, %c len1 ascii, %* %? %% : literal.
+    func Print(bool wrlocked) -> str
+    # 현재 폴더와 하위 항목을 디버그용 문자열로 반환. wrlocked가 True여야 잠금상태인 폴더도 기록됨.
+    func Navigate(str path, bool abs) -> bool
+    # Curpath를 path로 설정. abs가 참이면 절대경로, 거짓이면 Curdir 하위의 상대경로. 올바른 경로여야 True 반환.
+    func Info(str path, bool wrlocked, bool moreinfo) -> G4Finfo*
+    # 절대경로 path(혹은 빈 문자열로 Curdir)의 정보 반환. wrlocked가 True여야 잠금상태인 폴더도 기록됨.
+
+    func ImBin(str name, byte[] data) -> error
+    # 이진데이터 가져오기 (curpath/name). 이름이 이미 존재한다면 덮어쓰기됨.
+    func ImFiles(str[] paths) -> error
+    # 파일들 가져오기, 전체경로를 받아 자동으로 파일명을 잡아줌. 이름이 이미 존재한다면 덮어쓰기됨.
+    func ImDir(str path) -> error
+    # 폴더 가져오기. 전체경로를 받아 자동으로 폴더명을 잡아줌. 이름이 이미 존재한다면 오류발생.
+    func ExBin(str name) -> (byte[], error)
+    # 이진데이터 내보내기 (curpath/name).
+    func ExFiles(str[] names) -> error
+    # 파일들 내보내기. 이름을 받아 해당파일을 바탕화면에 생성 (desktop/kv5export/name).
+    func ExDir(str name) -> error
+    # 폴더 내보내기. 폴더명(혹은 빈 문자열로 Curdir)을 받아 바탕화면에 생성 (desktop/kv5export/name/).
+
+    func Delete(str[] names) -> error
+    # curdir/name들을 받아 파일/포함된 파일을 모두 삭제함.
+    func Move(str[] names, str dst) -> error
+    # Curdir 하위 폴더/파일을 dst로 지정된 전체경로 하위로 이동시킴. 특수폴더나 위계문제가 있는 폴더는 이동 불가.
+    func Rename(str[] before, str[] after) -> error
+    # Curdir 하위 폴더/파일의 이름을 before에서 after로 바꿈. 두 이름은 서로 형식이 일치해야 함.
+    func DirNew(str[] names) -> error
+    # Curdir 하위에 새 폴더들을 생성, 이름은 길이 1 이상으로 생성조건에 맞아야 함.
+    func DirLock(str name, bool islocked, bool sub) -> error
+    # curdir/name을 받아 해당폴더의 잠금상태를 islocked로 설정, sub가 True면 하위폴더도 마찬가지로 설정.
+    func Restore(bool mode) -> (int, error)
+    # 클러스터의 모든 파일에 대해 복구/재작성 작업 수행후 비정상 파일개수 반환. T 이름고치기, F 파일시스템 점검.
+
+    .Curpath str # 현재 작업 폴더 경로 (~/).
+    .Curdir vdir* # 현재 작업 포인터 (사용할 일 없음).
+    .Rootpath str # 루트 경로, RW 모드면 '/', R 모드면 '~/'.
+    .Cluster str* # 클러스터 이름.
+    .Account str* # 계정 이름, RW 모드면 'root', R 모드면 '~'.
+
+struct G4FSshell
+    func Command(str order, str[] option) -> error
+    # 명령에 따라 작업을 수행, 비동기 처리와 패닉 복구를 자동으로 지원, IObuf를 통해 입출력.
+
+    .InSys G4FScore* # 내부 G4FScore 구조체.
+    .AsyncErr str # 비동기 처리 에러결과물, 문제없다면 빈 문자열로 설정됨.
+    .IOstr str[] # 입출력 문자열 버퍼.
+    .IObyte byte[][] # 입출력 바이트열 버퍼.
+
+    .FlagWk bool # 비동기 작업 처리 플래그 (읽기전용).
+    .FlagRo bool # 읽기전용 클러스터 플래그 (읽기전용).
+    .CurPath str # 현재 작업경로 (~/).
+    .CurInfo G4Finfo* # 현재 작업폴더 정보 (읽기전용).
+
+! shell 명령어 !
+순서 : order / option / IOstr / IObyte / Async
+옵션 : T "true" / F "false" / ... (*n) / -> (ret)
+
+init
+new / remote, cluster, divsize, maxfptr
+boot / desktop, local, remote, blockA / cluster[->], account[->] / hint[->]
+exit
+rebuild / remote / / pw, kf
+
+abort / reset[TF], abort[TF], working[TF] / / / FG
+debug / count_lock[TF] / info0[->], info1[->], info2[->], info3[->] / / FG
+log / reset[TF] / logdt[->] / / FG
+login / sleep["1", "10", "30", "60", "*"] / / pw, kf
+reset / / / pw, kf, hint
+extend / account, wrlock[TF] / newpath[->] / pw, kf, hint
+
+search / name / result[->] / / FG
+print / wrlock[TF] / result[->] / / FG
+update / moreinfo[TF] / / / FG
+navigate / fullpath / subdir[->] / / FG
+
+imbin / name / / data / BG
+imfile / fullpath[...] / / / BG
+imdir / fullpath / / / BG
+exbin / name[...] / / data[->][...] / BG
+exfile / name[...] / / / BG
+exdir / name[or ""] / / / BG
+
+delete / name[...] / / / BG
+move / tgtdir, name[...] / / / BG
+rename / name[...] / newname[...] / / BG
+dirnew / name[...] / / / BG
+dirlock / lock[TF], name[or ""][...] / / / BG
+restore / mode["rename", "rebuild"] / result[->] / / BG
+*
+
+KV5 기반으로 만들어진 파일볼트 시스템입니다.
+KV4와 동일하게 물리 저장소에 파일 단위로 엑세스하기 때문에 KV4adv이고,
+실제 운용 특성은 KV5와 유사합니다.
