@@ -1,0 +1,24 @@
+<stdio> [4]
+# 외부 입출력 기능입니다.
+
+
+{io.input} (any q) -> str [100]
+# stdout에 질문 q를 출력하고 stdin으로 한 줄 읽기 (줄바꿈 미포함).
+{io.print} (any v, str end) [101]
+# stdout에 v 출력, 끝문자 수동지정.
+{io.println} (any v) [102]
+# stdout에 v 출력, 끝문자 줄바꿈.
+{io.error} (any v, str end) [103]
+# stderr에 v 출력, 끝문자 수동지정.
+{io.open} (str path, str mode) [104]
+# 경로 path의 파일을 모드("r", "w", "a")로 열기.
+{io.close} (str path) [105]
+# 열었던 경로 path의 파일 닫기.
+{io.seek} (str path, int pos, int base) -> int [106]
+# 경로 path의 파일의 포인터를 기준점(0 시작, -1 끝, 그 외 상대)과 위치 pos로 설정하기.
+{io.readline} (str path, int n) -> str [107]
+# 경로 path의 파일에서 n줄 읽기.
+{io.read} (str path, int size) -> bytes [108]
+# size 바이트 읽기 (음수면 전체읽기).
+{io.write} (str path, str|bytes data) [109]
+# data 쓰기.

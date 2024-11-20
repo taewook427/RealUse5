@@ -1,0 +1,72 @@
+<stdlib> [2]
+# 외부 상호작용 없이 동작하는 기본 기능들입니다.
+
+
+{type} (any v) -> str [32]
+# 6-type 중 하나의 값을 소문자로 반환.
+{int} (int|float|str|bytes v) -> int [33]
+# 정수화 / 문자열 파싱 / 리틀엔디안 디코딩.
+{float} (int|float|str v) -> float [34]
+# 실수화 / 문자열 파싱.
+{str} (any v) -> str [35]
+# 문자열 형식화 / UTF-8 디코딩.
+{bytes} (int|str|bytes v) -> bytes [36]
+# uint64 리틀엔디안 / UTF-8 인코딩.
+{hex} (int|bytes v) -> str [37]
+# 16진법으로 나타낸 문자열 반환.
+{chr} (int ucode) -> str [38]
+# 해당 번호를 가지는 유니코드 문자 반환.
+{ord} (str char) -> int [39]
+# 유니코드 문자의 번호 반환.
+{len} (str|bytes v) -> int [40]
+# 문자열 / 바이트 길이 반환.
+{slice} (str|bytes v, none|int start, none|int end) -> str [41]
+# 문자열 / 바이트 슬라이싱.
+
+{m.malloc} (str id, int size) [50]
+# 이름 id에 크기 size의 공간 할당 (음수 불가).
+{m.realloc} (str id, int size) [51]
+# 이름 id를 크기 size의 공간으로 재할당-기존항목 유지 (음수 불가).
+{m.free} (str id) [52]
+# 이름 id에 묶인 공간 해제.
+{m.len} (str id) -> int [53]
+# 이름 id에 묶인 공간 크기 반환.
+{m.set} (str id, int pos, any v) [54]
+# 이름 id에 위치 pos(음수 가능)에 항목을 v로 설정.
+{m.get} (str id, int pos) -> any [55]
+# 이름 id에 위치 pos에 항목을 반환.
+{m.split} (str id, str|bytes data, str|bytes div) [56]
+# 이름 id를 data를 div로 나눈 결과로 채움.
+{m.join} (str id, str|bytes join) -> str|bytes [57]
+# 이름 id에 내용을 join으로 결합해 반환.
+
+{str.change} (str data, bool upper) -> str [60]
+# data를 대문자/소문자로 변환.
+{str.find} (str data, str sub, bool head) -> int [61]
+# data에서 sub 문자열이 처음/마지막으로 나오는 위치 반환 (없으면 -1).
+{str.count} (str data, str sub) -> int [62]
+# data에서 sub 문자열이 나오는 횟수 반환.
+{str.replace} (str data, str old, str new, int count) -> str [63]
+# data의 old 문자열을 new로 count번(-1이면 전부) 교체.
+
+{t.time} () -> float [70]
+# 현재 유닉스 시간 반환.
+{t.stamp} (int|float time) -> str [71]
+# 유닉스 시간의 로컬 기준 타임스탬프 반환.
+{t.stampf} (int|float time, str format) -> str [72]
+# 포매팅된 타임스탬프 반환. (%Y, %M, %D, %h, %m, %s)
+{t.sleep} (int|float t) [73]
+# t초 실행 일시정지.
+
+{math.const} (str type) -> float [80]
+# 수학 상수 "e", "pi", "phi", "sqrt2"의 값을 반환.
+{math.conv} (str type, int|float v) -> int|float [81]
+# 절댓값 / 올림 / 내림 / 반올림한 정수 반환. ("abs", "up", "down", "round")
+{math.log} (int|float base, int|float v) -> float [82]
+# base를 밑으로 하는 로그함수.
+{math.trif} (str type, int|float v) -> float [83]
+# 삼각함수 "sin", "cos", "tan", "asin", "acos", "atan" (호도법 사용).
+{math.random} () -> float [84]
+# [0,1)의 실수 난수 발생.
+{math.randrange} (int start, int end) -> int [85]
+# [start,end)의 정수 난수 발생.

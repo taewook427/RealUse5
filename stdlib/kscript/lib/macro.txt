@@ -1,0 +1,51 @@
+<macro> [64]
+# 매크로 자동화 기능입니다. (python 런타임 전용)
+
+
+{pdf.open} (str path, str mode) [500]
+# 경로 path의 pdf를 mode("r", "w")로 열기.
+{pdf.close} (str path) [501]
+# 경로 path의 pdf 닫기.
+{pdf.len} (str path) -> int [502]
+# 경로 path의 pdf의 페이지수 구하기.
+{pdf.addpage} (str src, str dst, int page) [503]
+# src의 page번째 페이지를 dst에 적기.
+{pdf.addpdf} (str src, str dst) [504]
+# src pdf를 dst에 추가하기.
+{pdf.mkpdf} (str path, str data, bool mode) [505]
+# 경로 path의 pdf에 data 적기. (mode T 순수 문자열, F html 형식)
+
+{web.open} (str url) [510]
+# 기본 브라우저로 url 열기.
+{web.save} (str url, str path) [511]
+# url 링크 페이지를 pdf로 다운로드.
+
+{mouse.delay} (int|float t) [520]
+# 매크로 시스템의 딜레이를 설정 (초).
+{mouse.shot} (str path, none|int x_start, none|int y_start, none|int x_end, none|int y_end) [521]
+# 화면을 스크린샷하여 path에 저장, 
+{mouse.size} (bool xcord) -> int [522]
+# 화면의 x 또는 y 좌표를 반환.
+{mouse.pos} (bool xcord) -> int [523]
+# 마우스의 x 또는 y 좌표를 반환.
+{mouse.move} (int|float x, int|float y, bool drag, none|int|float t) [524]
+# 마우스를 상대위치 (x,y)로 이동, 드래그 / 이동시간 설정 가능.
+{mouse.moveto} (int|float x, int|float y, bool drag, none|int|float t) [525]
+# 마우스를 절대위치 (x,y)로 이동, 드래그 / 이동시간 설정 가능.
+{mouse.click} (int n, none|int|float interval, bool leftclick) [526]
+# 마우스를 n번 클릭, 클릭간격, 우클릭 설정 가능.
+{mouse.scroll} (int|float y) [527]
+# 마우스를 y 만큼 스크롤 (양수가 위로 스크롤).
+
+{key.write} (str word, none|int|float interval) [530]
+# 키보드 문자열 입력, 입력 간격 설정 가능.
+{key.press} (str char, none|int|float t) [531]
+# 키보드 글쇠를 t초 동안 누름.
+{key.set} (str char, bool ispressed) [532]
+# 키보드 글쇠 누름/해제 설정.
+{key.status} (str char) -> bool [533]
+# 특정 글쇠가 눌린 상태인지 반환.
+{key.event} () -> str [534]
+# 입력된 키보드 이벤트 반환.
+{key.wait} (str char) [535]
+# 특정 글쇠가 눌릴 때까지 대기.

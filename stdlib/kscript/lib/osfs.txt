@@ -1,0 +1,28 @@
+<osfs> [8]
+# 운영체제와 파일 시스템 관련 기능입니다.
+
+
+{os.name} () -> str [200]
+# 운영체제 종류 반환 ("windows", "linux").
+{os.chdir} (str path) [201]
+# 현재 작업 경로 변경.
+{os.getpath} (str type) -> str [202]
+# type("cwd", "desktop", "local", "starter", "base")에 따라 경로 반환.
+{os.exists} (str path) -> bool [203]
+# 경로 path에 폴더/파일이 존재하는지 확인.
+{os.abspath} (str path) -> str [204]
+# 절대경로로 변환.
+{os.is} (str path, bool mode) -> bool [205]
+# 해당 경로가 폴더/파일인지 확인 (T 파일, F 폴더).
+{os.finfo} (str path, bool mode) -> int [206]
+# 파일/폴더의 정보 반환 (mode T 크기, F 수정시각).
+{os.listdir} (str path) -> str [207]
+# 줄바꿈으로 구분된 폴더의 하위항목 이름 반환 (빈 폴더는 빈 문자열).
+{os.mkdir} (str path) [208]
+# 폴더 생성.
+{os.rename} (str old, str new) [209]
+# 파일/폴더 이름 바꾸기.
+{os.move} (str src, str dst) [210]
+# 파일/폴더 이동.
+{os.remove} (str path) [211]
+# 파일/폴더 삭제.

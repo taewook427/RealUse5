@@ -1,0 +1,16 @@
+<testfunc> [1]
+# 개발 테스트 단계에서 사용하는 함수입니다.
+
+
+{test.input} (any q) -> str [16]
+# 질문 q를 출력하고 사용자 입력을 반환.
+{test.print} (any v) [17]
+# v의 문자열 형태를 출력 (줄바꿈 없음).
+{test.read} (str path, int size) -> bytes [18]
+# path 경로의 파일을 size만큼 읽어옴 (음수라면 전체읽기).
+{test.write} (str path, str|bytes data) [19]
+# path 경로의 파일을 만들고 data 기록.
+{test.time} () -> float [20]
+# 현재 유닉스 시간을 실수 형태로 반환.
+{test.sleep} (int|float t) [21]
+# t초만큼 실행을 멈춤.
