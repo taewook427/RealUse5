@@ -11,7 +11,9 @@ import kobj
 
 # get domain txt from (http~ *.html)
 def gettxt(url, domain):
-    html = requests.get(url).text
+    res = requests.get(url)
+    res.encoding = "utf-8"
+    html = res.text
     dom = bs4.BeautifulSoup(html, "html.parser")
     data = dom.find("p", id=domain)
     if data == None:
