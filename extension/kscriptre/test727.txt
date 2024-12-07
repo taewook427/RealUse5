@@ -1,0 +1,57 @@
+# test727 : kscript 데이터 내장기 (python)
+
+def conv(b) {
+    m.malloc( "bconv", len(b) )
+    for (i, r <- b) {
+        m.set( "bconv", i, "\x" + hex(r) )
+    }
+    temp = m.join("bconv", "")
+    m.free("bconv")
+    return "b'" +  temp + "'"
+}
+
+def pymode(data, num, path) {
+    name = "data" + str(num) # dataN
+    num = len(data) // 40
+    if (len(data) % 40 != 0) {
+        num = num + 1
+    }
+    m.malloc("pyenc", num + 1)
+    m.set("pyenc", 0, "    " + name + " = b'' ## " + path)
+    num = len(data) // 40
+    for (i, r <- num) {
+        m.set( "pyenc", i + 1, "    " + name + " = " + name + " + " + conv( slice(data, 40 * i, 40 * i + 40) ) )
+    }
+    if (len(data) % 40 != 0) {
+        num = len(data) // 40
+        m.set( "pyenc", num + 1, "    " + name + " = " + name + " + " + conv( slice(data, 40 * num, None) ) )
+    }
+    temp = m.join("pyenc", "#n")
+    m.free("pyenc")
+    return temp + "#n"
+}
+
+def main() {
+    io.println("kscript datain python")
+    num = int( io.input("몇 개의 데이터를 내장합니까? : ") )
+    m.malloc("datain", num + 1)
+    m.set("datain", 0, "class xe5:")
+    for (i, r <- num) {
+        path = io.input("파일 경로 입력 : ")
+        if (slice(path, 0, 1) == "#"") {
+            path = slice(path, 1, -1)
+        }
+        io.open(path, "r")
+        data = io.read(path, -1)
+        io.close(path)
+        m.set( "datain", i + 1, pymode(data, i, path) )
+    }
+    temp = m.join("datain", "#n")
+    m.free("datain")
+    path = os.getpath("desktop") + "datain_result.py"
+    io.open(path, "w")
+    io.write(path, temp)
+    io.close(path)
+}
+
+main()

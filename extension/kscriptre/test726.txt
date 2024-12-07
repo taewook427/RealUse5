@@ -1,0 +1,48 @@
+# test726 : kscript 테스트 코드
+
+def fact(n) {
+    if (n < 2) {
+        return 1
+    } else {
+        return n * fact(n - 1)
+    }
+}
+
+def fib(n)
+{
+    if (n == 0)
+    {
+        return 0
+    }
+    else
+    {
+        if (n == 1)
+        {
+            return 1
+        }
+        else
+        {
+            return fib(n - 2) + fib(n - 1)
+        }
+    }
+}
+
+t = test.time()
+
+io.println(os.name())
+io.println(os.getpath("cwd"))
+io.println(os.getpath("desktop"))
+io.println(os.getpath("local"))
+io.println(os.getpath("starter"))
+io.println(os.getpath("base"))
+
+test.print("#n")
+for (i, _ <- 10) {
+    io.print("fact " + str(i) + " : " + str(fact(i)), "#n")
+}
+test.print("#n")
+for (i, _ <- 30) {
+    io.print("fib " + str(i) + " : " + str(fib(i)), "#n")
+}
+
+test.print(test.time() - t)
