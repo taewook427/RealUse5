@@ -1,0 +1,4 @@
+auto = 3
+size = 10485760
+
+0.name = "Drive"; 0.path = "C:\"
