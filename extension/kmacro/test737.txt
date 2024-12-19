@@ -1,0 +1,29 @@
+# test737 : kscript 자료추출기
+
+io.println("캡쳐 부위 왼쪽 위에 마우스를 올리고 엔터")
+io.input("ENTER")
+x0 = mouse.pos(True)
+y0 = mouse.pos(False)
+
+io.println("캡쳐 부위 오른쪽 아래에 마우스를 올리고 엔터")
+io.input("ENTER")
+x1 = mouse.pos(True)
+y1 = mouse.pos(False)
+
+n = int(io.input("캡쳐 횟수 : "))
+t = float(io.input("캡쳐 후 대기 : "))
+io.input("엔터를 눌러 캡쳐를 시작합니다")
+for (i, _ <- 3) {
+    io.print(3 - i, " ")
+    t.sleep(1)
+}
+
+for (i, _ <- n) {
+    name = "./_ST5_DATA/" + slice("0000" + str(i), -4, None) + ".png"
+    mouse.shot(name, x0, y0, x1, y1)
+    io.println(name)
+    key.press("right", None)
+    t.sleep(t)
+}
+
+io.println("캡쳐가 종료되었습니다")

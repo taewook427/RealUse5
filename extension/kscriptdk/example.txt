@@ -1,0 +1,4 @@
+# hello world program
+test.print("Hello, world!#n")
+t = test.input("What is your name? : ")
+test.print("Nice to meet you, " + t + "!!#n")
