@@ -654,7 +654,7 @@ func (tbox *OptSel) checkinput(pos int, content string) (output string) {
 		limit := tbox.lenlimit[pos]
 		var ext string
 		if strings.Contains(temp, ".") {
-			ext = strings.ToLower(temp[strings.Index(temp, ".")+1:])
+			ext = strings.ToLower(temp[strings.LastIndex(temp, ".")+1:])
 		} else {
 			ext = ""
 		}
