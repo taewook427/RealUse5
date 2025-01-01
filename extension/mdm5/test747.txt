@@ -1,0 +1,37 @@
+# test747 : 네이버웹툰 다운로더
+
+url = "https://comic.naver.com/webtoon/detail?titleId=687915&no=" # 앞부분
+start = 1 # 시작 숫자
+end = 7 # 종료 숫자
+path = os.getpath("desktop") + "temp747/"
+os.mkdir(path)
+
+i = start
+while (i <= end) {
+    t.sleep(1.5)
+    dwn(url + str(i), path + "dwn_" + str(i) + ".pdf")
+    io.println("#ncomplete : " + str(i)) # 중복되는 링크 존재로 합치기 전 확인이 필요하다
+    i = i + 1
+}
+io.println("end!")
+
+# 다운로드 후 pdf 마지막 3장 (댓글부분) 자르기
+def dwn(url, path) {
+    web.save(url, path + ".pdf")
+    pdf.open(path + ".pdf", "r")
+    pdf.open(path, "w")
+    plen = pdf.len(path + ".pdf")
+    if (plen < 4) {
+        pend = plen
+    } else {
+        pend = plen - 3
+    }
+    io.print("pdf trim : ", "")
+    for (j, _ <- pend) {
+        pdf.addpage(path + ".pdf", path, j)
+        io.print(j, " ")
+    }
+    pdf.close(path + ".pdf")
+    pdf.close(path)
+    os.remove(path + ".pdf")
+}
