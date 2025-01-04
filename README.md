@@ -22,20 +22,20 @@ Windows 11과 Linux Mint cinnamon을 지원합니다.
 
 - websvr : 웹 서버 코드와 자료
 
-### 권장 시스템 사양
+### 시스템 최소 사양
 
-- OS : Windows 10 or upper / Linux Mint cinnamon 20 or upper
+- OS : Windows 10 / Linux Mint cinnamon 20
 
-- GUI environment : FHD (1920x1080) resolution or upper
+- GUI environment : FHD (1920x1080) resolution
 
-- CPU : Intel Core i3-11TH or upper
+- CPU : Intel Core i3-11TH
 
-- RAM : 8GiB or more
+- RAM : 8GiB
 
-- GPU : Intel UHD Graphics or upper
+- GPU : Intel UHD Graphics
 
-- SSD : 5GB storage or more
+- SSD : 5GB storage
 
-- Network : download 10Mbps or faster
+- Network : download 10Mbps
 
-last update : //이 프로젝트는 아직 개발중입니다//
+last update : 2025.01.05
