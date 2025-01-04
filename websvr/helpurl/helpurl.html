@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RealUse5 도움말</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .header {
+            background-color: #002242;
+            padding-bottom: 20px;
+        }
+        .header-image {
+            width: 245px;
+            height: 100px;
+            background-image: url('head.jpg');
+            background-size: cover;
+            background-position: left;
+        }
+        .header-text {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 24px;
+            color: gold;
+        }
+        .image-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 40px 0;
+        }
+        .image-container img { width: 80%;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s ease-in-out;
+        }
+        .image-container img.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-image"></div>
+        <div class="header-text", id="text-loader"></div>
+    </div>
+    <div class="image-container" id="image-container">
+    </div>
+
+    <script>
+        let imageContainer = document.getElementById('image-container');
+        let textElement = document.getElementById("text-loader");
+        let totalnum = 12;
+        let curimagenum = 0;
+        let images = [ ];
+        for (let i = 0; i < totalnum; i++) {
+            images.push("help" + i.toString() + ".jpg")
+        }
+
+        let textToLoad = "개인 사용자를 위한 유용한 소프트웨어 모음집, RealUse5";
+        for (let i = 0; i < textToLoad.length; i++) {
+            setTimeout( () => {textElement.textContent += textToLoad[i]}, 400 + 25 * i );
+        }
+        setTimeout(loadImages, 200);
+        setTimeout(loadImages, 700);
+
+        window.addEventListener('scroll', () => {
+            if (window.innerHeight + window.scrollY + 10 >= document.body.offsetHeight) {
+                loadImages();
+            }
+        });
+
+        function loadImages() {
+            if (curimagenum < images.length) {
+                let img = document.createElement('img');
+                img.src = images[curimagenum];
+                imageContainer.appendChild(img);
+                setTimeout(() => { img.classList.add('show'); }, 100);
+                curimagenum = curimagenum + 1;
+            }
+        }
+    </script>
+</body>
+</html>
