@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>RealUse5 메인페이지</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .header {
+            background-color: #002242;
+            color: gold;
+            padding-bottom: 20px;
+        }
+        .header-image {
+            width: 245px;
+            height: 100px;
+            background-image: url('websvr/helpurl/head.jpg');
+            background-size: cover;
+            background-position: left;
+        }
+        .header-text {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 24px;
+        }
+        .header-menu {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 50px;
+            font-size: 40px;
+        }
+
+        .dropdown {
+            position : relative;
+            display : inline-block;
+            text-align: center;
+            width: 20%;
+        }
+        .dropdown-content {
+            display : none;
+            position : absolute;
+            z-index : 1;
+            min-width: 100%;
+        }
+        .dropdown-content a {
+            display : block;
+            text-decoration: none;
+            background-color: #002242;
+            color: gold;
+            font-size: 24px;
+            padding: 12px 20px;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        .dropdown-content a:hover {
+            background-color: #003568;
+        }
+
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .gallery {
+            position: relative;
+            width: 80%;
+            height: 80%;
+            overflow: hidden;
+        }
+        .gallery img {
+            width: 100%;
+            height: 100%;
+            object-fit: scale-down;
+            transition: transform 0.3s ease;
+        }
+        .navigation {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+        .navigation span {
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 10px;
+            font-size: 24px;
+            pointer-events: all;
+        }
+
+        .slide-bar {
+            position: absolute;
+            bottom: -30px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        .slide {
+            width: 10px;
+            height: 10px;
+            margin: 0 5px;
+            background-color: #ccc;
+            border-radius: 50%;
+            transition: background-color 0.3s;
+        }
+        .slide.active {
+            background-color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-image"></div>
+        <div class="header-text", id="text-loader"></div>
+        <div class="header-menu">
+            <div>|</div>
+            <div class="dropdown">
+                <span class="dropbtn">Downloads</span>
+                <div class="dropdown-content">
+                    <a href="websvr/helpurl/Manual.pdf">User Guide</a>
+                    <a href="websvr/helpurl/install.zip">Installer</a>
+                    <a href="websvr/helpurl/windev.zip">Windows Dev</a>
+                    <a href="websvr/helpurl/linuxdev.zip">Linux Dev</a>
+                </div>
+            </div>
+            <div>|</div>
+            <div class="dropdown">
+                <span class="dropbtn">Documents</span>
+                <div class="dropdown-content">
+                    <a href="websvr/gogc/gogc.pdf">Go Garbage Collection</a>
+                    <a href="websvr/pygo/pygo.pdf">Using Go in Python</a>
+                    <a href="websvr/benchmark/benchmark.txt">Encryption Benchmark</a>
+                    <a href="websvr/kscript5/kscript5.pdf">KScript5 Language</a>
+                    <a href="websvr/kvault5/kvault5.pdf">KV5drive Structure</a>
+                    <a href="websvr/klibenv/klibenv.txt">DevEnv Settings</a>
+                </div>
+            </div>
+            <div>|</div>
+            <div class="dropdown">
+                <span class="dropbtn">Links</span>
+                <div class="dropdown-content">
+                    <a href="https://github.com/taewook427/RealUse5">GitHub Page</a>
+                    <a href="websvr/helpurl/helpurl.html">User Help</a>
+                    <a href="https://taewook427.github.io/RealUse5_Sub0/data/list.html">Data Server 0</a>
+                    <a href="https://taewook427.github.io/RealUse5_Sub1/data/list.html">Data Server 1</a>
+                </div>
+            </div>
+            <div>|</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="gallery">
+            <div class="navigation">
+                <span id="prev">&lt;</span>
+                <span id="next">&gt;</span>
+            </div>
+            <img id="currentImage" alt="사진">
+        </div>
+    </div>
+
+    <div class="slide-bar">
+        <span class="slide" id="slide0"></span>
+        <span class="slide" id="slide1"></span>
+        <span class="slide" id="slide2"></span>
+        <span class="slide" id="slide3"></span>
+        <span class="slide" id="slide4"></span>
+        <span class="slide" id="slide5"></span>
+    </div>
+
+    <script>
+        let textElement = document.getElementById("text-loader");
+        let currentIndex = 0;
+        let totalnum = 6;
+        let images = [ ];
+        for (let i = 0; i < totalnum; i++) {
+            images.push("websvr/helpurl/main" + i.toString() + ".jpg")
+        }
+
+        let textToLoad = "개인 사용자를 위한 유용한 소프트웨어 모음집, RealUse5";
+        for (let i = 0; i < textToLoad.length; i++) {
+            setTimeout( () => {textElement.textContent += textToLoad[i]}, 400 + 25 * i );
+        }
+
+        function showImage(index) {
+            const img = document.getElementById('currentImage');
+            img.src = images[index];
+            const slides = document.querySelectorAll('.slide');
+            if (totalnum > 6) {
+                let slidePerGroup = totalnum / 6
+                slides.forEach((slide, idx) => {
+                    slide.classList.toggle('active', idx === Math.floor(index / slidePerGroup));
+                });
+            } else {
+                slides.forEach((slide, idx) => {
+                    slide.classList.toggle('active', idx === index);
+                });
+            }
+        }
+        showImage(0);
+        
+        document.getElementById('prev').addEventListener('click', () => {
+            currentIndex = (currentIndex > 0) ? currentIndex - 1 : images.length - 1; showImage(currentIndex);
+        });
+        document.getElementById('next').addEventListener('click', () => {
+            currentIndex = (currentIndex < images.length - 1) ? currentIndex + 1 : 0; showImage(currentIndex);
+        });
+    </script>
+</body>
+</html>
