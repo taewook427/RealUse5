@@ -287,7 +287,7 @@ class downloader:
                     addproc()
                     write(f"다운로드 실패 : {e}")
 
-        if self.check[3]:
+        if self.check[0]:
             try:
                 addcfg()
                 addproc()
