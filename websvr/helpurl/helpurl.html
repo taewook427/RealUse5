@@ -68,10 +68,12 @@
         }
         setTimeout(loadImages, 200);
         setTimeout(loadImages, 700);
+        let loading = false;
 
         window.addEventListener('scroll', () => {
             if (window.innerHeight + window.scrollY + 10 >= document.body.offsetHeight) {
-                loadImages();
+                loading = true;
+                setTimeout(loadImages, 300);
             }
         });
 
@@ -83,6 +85,7 @@
                 setTimeout(() => { img.classList.add('show'); }, 100);
                 curimagenum = curimagenum + 1;
             }
+            loading = false;
         }
     </script>
 </body>
