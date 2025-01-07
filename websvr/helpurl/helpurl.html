@@ -71,7 +71,7 @@
         let loading = false;
 
         window.addEventListener('scroll', () => {
-            if (window.innerHeight + window.scrollY + 10 >= document.body.offsetHeight) {
+            if (window.innerHeight + window.scrollY + 10 >= document.body.offsetHeight && !loading) {
                 loading = true;
                 setTimeout(loadImages, 300);
             }
