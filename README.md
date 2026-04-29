@@ -38,4 +38,8 @@ Windows 11과 Linux Mint cinnamon을 지원합니다.
 
 - Network : download 10Mbps
 
-last update : 2025.01.05
+```
+RealUse5 is a comprehensive, hybrid desktop utility framework designed to combine the high-performance core processing of Go with the flexible scripting and UI capabilities of Python.
+Operating as a fully self-contained ecosystem, it features an extensive custom standard library (stdlib) that supports advanced operations such as cryptography, file archiving, database management, and custom script interpretation.
+Through its modular architecture encompassing various extensions and independent executables, this project serves as a robust and highly scalable platform for PC utility development.
+```
